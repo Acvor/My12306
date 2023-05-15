@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>12306余票查询</title>
+    <style>
+        .one{
+            border: 1px solid cornflowerblue;
+            border-collapse: collapse;
+        }
+    </style>
+</head>
+<body>
+    <table class="one">
+        <tr class="one">
+            <th class="one">车次</th>
+            <th class="one">出发站 <br> 到达站 </th>
+            <th class="one">出发时间<br>到达时间</th>
+            <th class="one">历时</th>
+            <th class="one">到达时间</th>
+        </tr>
+    </table>
+    <button id="select" >查询</button>
+    <script>
+        window.onload=function (){
+            document.getElementById("select").onclick=function (){
+                console.log("即将余票查询");
+                //Ajax发送请求
+                request = new XMLHttpRequest();
+                request.onreadystatechange=callback;
+                request.open("GET","https://kyfw.12306.cn/otn/leftTicket/query?leftTicketDTO.train_date=2023-05-09&leftTicketDTO.from_station=GLZ&leftTicketDTO.to_station=GZQ&purpose_codes=ADULT");
+                request.send(null);
+            }
+        }
+    </script>
+</body>
+</html>

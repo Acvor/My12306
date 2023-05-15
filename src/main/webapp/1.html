@@ -1,0 +1,165 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>12306</title>
+    <style>
+        tabel, thead, tr, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        .search {
+            width: 100px;
+            height: 35px;
+            background-color: gold;
+        }
+    </style>
+<!--    <script>
+        // 让查询按钮响应我们的鼠标点击操作
+        window.onload = function () {
+            //找到查询按钮
+            document.getElementsByClassName("search")[0].onclick = function () {
+                // 开始操作DOM
+                /*
+                <tr>
+                    <td>K599</td>
+                    <td>桂林<br>广州</td>
+                    <td>08:39<br>11:40</td>
+                    <td>3时</td>
+                    <td>aaaa <br> bbbb</td>
+                </tr>
+                */
+                //实际项目中，数据要从数据库查询
+
+                /*var td1=document.createElement("td");
+                td1.appendChild(document.createTextNode("K599"));
+
+                var td2=document.createElement("td");
+                td2.appendChild(document.createTextNode("桂林<br>广州"));
+
+                var td3=document.createElement("td");
+                td3.appendChild(document.createTextNode("08:39<br>11:40"));
+
+                var td4=document.createElement("td");
+                td4.appendChild(document.createTextNode("3时"));
+
+                var td5=document.createElement("td");
+                td5.appendChild(document.createTextNode("aaaa <br> bbbb"));
+
+
+                var tr=document.createElement("tr");
+                tr.appendChild(td1);
+                tr.appendChild(td2);
+                tr.appendChild(td3);
+                tr.appendChild(td4);
+                tr.appendChild(td5);
+
+                document.getElementById("train").appendChild(tr);
+                */
+                //   利用ajax对12306的后端《查询余票》接口进行请求
+                request = new XMLHttpRequest();
+                request.onreadystatechange = callBack;
+                //执行下面open之前要把三个input的value拿到
+                startStation=document.getElementById("startStation").value;
+                endStation=document.getElementById("endStation").value;
+                departureDate=document.getElementById("departureDate").value;
+                console.log(startStation,endStation,departureDate);
+
+
+                request.open("GET", "/searchTicket?startStation="+startStation+"&endStation="+endStation+"&departureDate="+departureDate);
+                request.send(null);
+
+            }
+        }
+
+        function callBack() {
+            console.log("我是回调函数")
+            if(request.readyState==4){
+                //请求完成
+                if(request.status==200){
+                    //通过request.responseText
+                  console.log("服务器返回车次数据：",request.responseText);
+                  var tarinDate= JSON.parse(request.responseText);
+                  //console.log(starinDate.length);
+
+                    for(var i=0;i<tarinDate.length;i++){
+                        var train=tarinDate[i];
+                        brNode=document.createElement("br");
+
+                        trainNumberTd=document.createElement("td");//创建车次td元素
+                        trainNumberTd.appendChild(document.createTextNode(train.trainNumber));
+
+                        startStationTd=document.createElement("td");
+                        startStationTd.appendChild(document.createTextNode(train.startStation));
+                        startStationTd.appendChild(brNode);
+                        startStationTd.appendChild(document.createTextNode(train.endStation));
+
+                        departureDateTd=document.createElement("td");
+                        departureDateTd.appendChild(document.createTextNode(train.departureTime));
+                        departureDateTd.appendChild(brNode);
+                        departureDateTd.appendChild(document.createTextNode(train.arrivalTime));
+
+                        durationTd=document.createElement("td");
+                        durationTd.appendChild(document.createTextNode(train.duration));
+
+
+                        var trainTR=document.createElement("tr");
+                        trainTR.appendChild(trainNumberTd);
+                        trainTR.appendChild(startStationTd);
+                        trainTR.appendChild(departureDateTd);
+                        trainTR.appendChild(durationTd);
+                        document.getElementById("train").appendChild(trainTR);
+
+
+                        // console.log(train.trainNumber);
+                        // console.log(train.startStation);
+                        // console.log(train.endStation);
+                        // console.log(train.departureDate);
+                        // console.log(train.arrivalTime);
+                        // console.log(train.duration);
+                        // console.log("\n");
+
+                    }
+                 }else {
+                     console.log("服务器出错了，状态码：",request.status);
+                 }
+            }
+        }
+
+        function search() {
+            console.log("开始车票查询")
+        }
+    </script>-->
+</head>
+<body>
+<form action="/searchTicket" method="get">
+    <label for="startStation">起始站：</label> <input id="startStation" type="text" name="startStation">
+
+    <label for="endStation">终点站：</label> <input id="endStation" type="text" name="endStation">
+
+    <label for="departureDate">出发日期：</label> <input id="departureDate" type="date" name="departureDate">
+
+    <button class="search" type="submit">查询</button>
+</form>
+
+<!-- 先演示假数据，再进行真数据的操作 -->
+<table id="train">
+    <thead>
+    <tr>
+        <th>车次</th>
+        <th>出发站<br>到达站</th>
+        <th>出发时间<br>到达时间</th>
+        <th>历时</th>
+        <th>商务座<br>特等座</th>
+    </tr>
+
+    </thead>
+</table>
+<!-- <button onclick="search()">查询</button> -->
+
+</body>
+</html>
